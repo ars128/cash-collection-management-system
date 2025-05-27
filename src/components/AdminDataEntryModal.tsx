@@ -10,7 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { useEmployeeData } from "@/hooks/useEmployeeData";
+import { useSupabaseEmployeeData } from "@/hooks/useSupabaseEmployeeData";
 import { useToast } from "@/hooks/use-toast";
 
 interface AdminDataEntryModalProps {
@@ -20,15 +20,16 @@ interface AdminDataEntryModalProps {
 }
 
 export const AdminDataEntryModal = ({ isOpen, onClose, onDataUpdate }: AdminDataEntryModalProps) => {
-  const { employees, addTransaction } = useEmployeeData();
+  const { employees, addTransaction } = useSupabaseEmployeeData();
   const { toast } = useToast();
   
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<string>('');
   const [collectionAmount, setCollectionAmount] = useState<string>('');
   const [depositAmount, setDepositAmount] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!selectedEmployeeId) {
@@ -52,24 +53,36 @@ export const AdminDataEntryModal = ({ isOpen, onClose, onDataUpdate }: AdminData
       return;
     }
 
-    addTransaction(selectedEmployeeId, {
-      date: format(selectedDate, 'yyyy-MM-dd'),
-      collection,
-      deposit
-    });
+    setLoading(true);
 
-    toast({
-      title: "Success",
-      description: "Transaction added successfully",
-    });
+    try {
+      await addTransaction(selectedEmployeeId, {
+        transaction_date: format(selectedDate, 'yyyy-MM-dd'),
+        collection_amount: collection,
+        deposit_amount: deposit
+      });
 
-    // Reset form
-    setSelectedEmployeeId('');
-    setCollectionAmount('');
-    setDepositAmount('');
-    setSelectedDate(new Date());
-    
-    onDataUpdate();
+      toast({
+        title: "Success",
+        description: "Transaction added successfully",
+      });
+
+      // Reset form
+      setSelectedEmployeeId('');
+      setCollectionAmount('');
+      setDepositAmount('');
+      setSelectedDate(new Date());
+      
+      onDataUpdate();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add transaction. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleClose = () => {
@@ -99,7 +112,7 @@ export const AdminDataEntryModal = ({ isOpen, onClose, onDataUpdate }: AdminData
               <SelectContent>
                 {employees.map(employee => (
                   <SelectItem key={employee.id} value={employee.id}>
-                    {employee.name} (ID: {employee.id})
+                    {employee.name} (ID: {employee.emp_id})
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -149,6 +162,7 @@ export const AdminDataEntryModal = ({ isOpen, onClose, onDataUpdate }: AdminData
                 className="text-right"
                 step="0.01"
                 min="0"
+                disabled={loading}
               />
             </div>
 
@@ -165,16 +179,17 @@ export const AdminDataEntryModal = ({ isOpen, onClose, onDataUpdate }: AdminData
                 className="text-right"
                 step="0.01"
                 min="0"
+                disabled={loading}
               />
             </div>
           </div>
 
           <div className="flex justify-end space-x-3 pt-4">
-            <Button type="button" variant="outline" onClick={handleClose}>
+            <Button type="button" variant="outline" onClick={handleClose} disabled={loading}>
               Cancel
             </Button>
-            <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-              Add Transaction
+            <Button type="submit" className="bg-blue-600 hover:bg-blue-700" disabled={loading}>
+              {loading ? "Adding..." : "Add Transaction"}
             </Button>
           </div>
         </form>

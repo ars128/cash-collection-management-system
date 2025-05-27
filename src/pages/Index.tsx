@@ -1,16 +1,16 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { OutstandingReportDashboard } from "@/components/OutstandingReportDashboard";
 import { EmployeePaymentReport } from "@/components/EmployeePaymentReport";
 import { AdminDataEntryModal } from "@/components/AdminDataEntryModal";
 import { LoginPage } from "@/components/LoginPage";
-import { Plus, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { LogOut } from "lucide-react";
 
 const Index = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { user, loading, signOut } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
@@ -20,14 +20,22 @@ const Index = () => {
   };
 
   const handleLogin = () => {
-    setIsAuthenticated(true);
+    // This will be handled by the auth state change
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
+  const handleLogout = async () => {
+    await signOut();
   };
 
-  if (!isAuthenticated) {
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!user) {
     return <LoginPage onLogin={handleLogin} />;
   }
 
