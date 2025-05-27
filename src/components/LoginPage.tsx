@@ -13,7 +13,6 @@ interface LoginPageProps {
 export const LoginPage = ({ onLogin }: LoginPageProps) => {
   const [email, setEmail] = useState('admin@astra.in');
   const [password, setPassword] = useState('astra');
-  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   
   const { signIn } = useAuth();
@@ -130,22 +129,6 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
             >
               {loading ? "Signing in..." : "Login to dashboard"}
             </Button>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Checkbox 
-                  id="remember"
-                  checked={rememberMe}
-                  onCheckedChange={(checked) => setRememberMe(checked as boolean)}
-                />
-                <label htmlFor="remember" className="text-sm text-gray-600">
-                  Remember me
-                </label>
-              </div>
-              <a href="#" className="text-sm text-purple-600 hover:underline">
-                Forgot password
-              </a>
-            </div>
           </form>
         </div>
       </div>
