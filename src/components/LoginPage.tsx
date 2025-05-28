@@ -57,13 +57,22 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
   return (
     <div className="min-h-screen flex">
       {/* Left side with purple gradient */}
-      <div class="bg-gradient-to-br flex flex-1 items-center justify-center p-12 text-white"
-           style="--tw-gradient-from: #4C4895; --tw-gradient-to: #37337b; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);">
-        <div class="max-w-md">
-          <h1 class="text-4xl font-bold mb-4">Cash Management Dashboard</h1>
-          <p class="text-lg text-purple-100">Real-time Cash Reconciliation – Ensuring Accuracy &amp; Transparency</p>
+      <div
+        className="bg-gradient-to-br flex flex-1 items-center justify-center p-12 text-white"
+        style={{
+          '--tw-gradient-from': '#4C4895',
+          '--tw-gradient-to': '#37337b',
+          '--tw-gradient-stops': 'var(--tw-gradient-from), var(--tw-gradient-to)',
+        } as React.CSSProperties}
+      >
+        <div className="max-w-md">
+          <h1 className="text-4xl font-bold mb-4">Cash Management Dashboard</h1>
+          <p className="text-lg text-purple-100">
+            Real-time Cash Reconciliation – Ensuring Accuracy &amp; Transparency
+          </p>
         </div>
       </div>
+
 
       {/* Right side with login form */}
       <div className="flex-1 bg-white flex items-center justify-center p-12">
