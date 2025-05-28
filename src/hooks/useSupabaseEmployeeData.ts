@@ -39,7 +39,7 @@ export const useSupabaseEmployeeData = () => {
   const fetchEmployees = async () => {
     try {
       const { data, error } = await supabase
-        .from('employees' as any)
+        .from('employees')
         .select('*')
         .order('emp_id');
       
@@ -58,7 +58,7 @@ export const useSupabaseEmployeeData = () => {
   const fetchTransactions = async () => {
     try {
       const { data, error } = await supabase
-        .from('transactions' as any)
+        .from('transactions')
         .select('*')
         .order('transaction_date');
       
@@ -92,11 +92,11 @@ export const useSupabaseEmployeeData = () => {
   }) => {
     try {
       const { data, error } = await supabase
-        .from('transactions' as any)
+        .from('transactions')
         .insert([{
           employee_id: employeeId,
           ...transactionData
-        }] as any)
+        }])
         .select();
 
       if (error) {
