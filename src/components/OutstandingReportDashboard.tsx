@@ -125,29 +125,6 @@ export const OutstandingReportDashboard = () => {
         </Table>
       </div>
 
-      {/* Pagination */}
-      <div className="flex items-center justify-between pt-4">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <span>Show</span>
-          <select className="border border-gray-300 rounded px-3 py-1">
-            <option>10</option>
-            <option>25</option>
-            <option>50</option>
-          </select>
-          <span>Rows</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">1</button>
-          <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">2</button>
-          <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">3</button>
-          <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">4</button>
-          <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">5</button>
-          <span className="px-2 text-gray-400">...</span>
-          <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">10</button>
-          <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded">→</button>
-        </div>
-      </div>
-      
       {employeeSummaries.length === 0 && (
         <div className="text-center py-12">
           <div className="text-gray-400 text-lg mb-2">No employee data available</div>
