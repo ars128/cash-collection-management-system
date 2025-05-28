@@ -113,7 +113,7 @@ export const useSupabaseEmployeeData = () => {
     }
   };
 
-  // Process transactions for an employee
+  // Process transactions for an employee with proper clearing logic
   const processTransactions = (employeeTransactions: Transaction[]): ProcessedTransaction[] => {
     let runningBalance = 0;
     
