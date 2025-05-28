@@ -100,12 +100,6 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
               {loading ? "Signing in..." : "Login to dashboard"}
             </Button>
           </form>
-
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600 mb-2">Default Login Credentials:</p>
-            <p className="text-sm font-mono">Email: admin@astra.in</p>
-            <p className="text-sm font-mono">Password: 123456</p>
-          </div>
         </div>
       </div>
     </div>
