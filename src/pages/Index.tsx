@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { OutstandingReportDashboard } from "@/components/OutstandingReportDashboard";
-import { EmployeePaymentReport } from "@/components/EmployeePaymentReport";
+import { DetailedEmployeePaymentReport } from "@/components/DetailedEmployeePaymentReport";
 import { AdminDataEntryModal } from "@/components/AdminDataEntryModal";
 import { LoginPage } from "@/components/LoginPage";
 import { useAuth } from "@/hooks/useAuth";
@@ -46,7 +46,7 @@ const Index = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
-            <p className="text-sm text-gray-500">Outstanding Report</p>
+            <p className="text-sm text-gray-500">Cash Management System</p>
           </div>
           <div className="flex items-center gap-4">
             <Button 
@@ -89,7 +89,7 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="payment">
-            <EmployeePaymentReport key={refreshTrigger} />
+            <DetailedEmployeePaymentReport key={refreshTrigger} />
           </TabsContent>
         </Tabs>
 

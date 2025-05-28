@@ -37,32 +37,40 @@ export const useSupabaseEmployeeData = () => {
 
   // Fetch employees
   const fetchEmployees = async () => {
-    const { data, error } = await supabase
-      .from('employees')
-      .select('*')
-      .order('emp_id');
-    
-    if (error) {
+    try {
+      const { data, error } = await supabase
+        .from('employees')
+        .select('*')
+        .order('emp_id');
+      
+      if (error) {
+        console.error('Error fetching employees:', error);
+        return;
+      }
+      
+      setEmployees(data || []);
+    } catch (error) {
       console.error('Error fetching employees:', error);
-      return;
     }
-    
-    setEmployees(data || []);
   };
 
   // Fetch transactions
   const fetchTransactions = async () => {
-    const { data, error } = await supabase
-      .from('transactions')
-      .select('*')
-      .order('transaction_date');
-    
-    if (error) {
+    try {
+      const { data, error } = await supabase
+        .from('transactions')
+        .select('*')
+        .order('transaction_date');
+      
+      if (error) {
+        console.error('Error fetching transactions:', error);
+        return;
+      }
+      
+      setTransactions(data || []);
+    } catch (error) {
       console.error('Error fetching transactions:', error);
-      return;
     }
-    
-    setTransactions(data || []);
   };
 
   // Load data on mount
@@ -82,22 +90,27 @@ export const useSupabaseEmployeeData = () => {
     collection_amount: number;
     deposit_amount: number;
   }) => {
-    const { data, error } = await supabase
-      .from('transactions')
-      .insert([{
-        employee_id: employeeId,
-        ...transactionData
-      }])
-      .select();
+    try {
+      const { data, error } = await supabase
+        .from('transactions')
+        .insert([{
+          employee_id: employeeId,
+          ...transactionData
+        }])
+        .select();
 
-    if (error) {
+      if (error) {
+        console.error('Error adding transaction:', error);
+        throw error;
+      }
+
+      // Refresh transactions
+      await fetchTransactions();
+      return data;
+    } catch (error) {
       console.error('Error adding transaction:', error);
       throw error;
     }
-
-    // Refresh transactions
-    await fetchTransactions();
-    return data;
   };
 
   // Process transactions for an employee

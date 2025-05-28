@@ -1,12 +1,11 @@
 
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { useEmployeeData } from "@/hooks/useEmployeeData";
+import { useSupabaseEmployeeData } from "@/hooks/useSupabaseEmployeeData";
 
 export const OutstandingReportDashboard = () => {
-  const { employees, getEmployeeSummary } = useEmployeeData();
+  const { employees, getEmployeeSummary } = useSupabaseEmployeeData();
 
   const employeeSummaries = employees.map(employee => {
     const summary = getEmployeeSummary(employee.id);
@@ -107,7 +106,7 @@ export const OutstandingReportDashboard = () => {
             {employeeSummaries.map((employee) => (
               <TableRow key={employee.id} className="hover:bg-gray-50 transition-colors duration-150">
                 <TableCell className="py-4 text-gray-600">BGRoad, Karnataka</TableCell>
-                <TableCell className="font-medium py-4">{employee.id.replace('EMP00', '')}</TableCell>
+                <TableCell className="font-medium py-4">{employee.emp_id.replace('EMP', '')}</TableCell>
                 <TableCell className="py-4 font-medium text-gray-800">{employee.name}</TableCell>
                 <TableCell className="py-4 font-medium">
                   {employee.totalCollection.toLocaleString()}
