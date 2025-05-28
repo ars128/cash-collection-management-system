@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 
 interface LoginPageProps {
   onLogin: () => void;
@@ -12,7 +11,7 @@ interface LoginPageProps {
 
 export const LoginPage = ({ onLogin }: LoginPageProps) => {
   const [email, setEmail] = useState('admin@astra.in');
-  const [password, setPassword] = useState('astra');
+  const [password, setPassword] = useState('123456');
   const [loading, setLoading] = useState(false);
   
   const { signIn } = useAuth();
@@ -22,49 +21,19 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
     e.preventDefault();
     setLoading(true);
 
+    console.log('Attempting login with:', { email, password });
+
     try {
       const { error } = await signIn(email, password);
       
       if (error) {
-        // If user doesn't exist, create them
-        if (error.message.includes('Invalid login credentials')) {
-          const { error: signUpError } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-              data: {
-                full_name: 'Admin User'
-              }
-            }
-          });
-
-          if (signUpError) {
-            toast({
-              title: "Error",
-              description: signUpError.message,
-              variant: "destructive"
-            });
-            return;
-          }
-
-          // Try signing in again after signup
-          const { error: retryError } = await signIn(email, password);
-          if (retryError) {
-            toast({
-              title: "Error",
-              description: retryError.message,
-              variant: "destructive"
-            });
-            return;
-          }
-        } else {
-          toast({
-            title: "Error",
-            description: error.message,
-            variant: "destructive"
-          });
-          return;
-        }
+        console.error('Login error:', error);
+        toast({
+          title: "Login Error",
+          description: error.message,
+          variant: "destructive"
+        });
+        return;
       }
 
       toast({
@@ -74,6 +43,7 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
       
       onLogin();
     } catch (err) {
+      console.error('Unexpected error:', err);
       toast({
         title: "Error",
         description: "An unexpected error occurred",
@@ -130,6 +100,12 @@ export const LoginPage = ({ onLogin }: LoginPageProps) => {
               {loading ? "Signing in..." : "Login to dashboard"}
             </Button>
           </form>
+
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <p className="text-sm text-gray-600 mb-2">Default Login Credentials:</p>
+            <p className="text-sm font-mono">Email: admin@astra.in</p>
+            <p className="text-sm font-mono">Password: 123456</p>
+          </div>
         </div>
       </div>
     </div>
