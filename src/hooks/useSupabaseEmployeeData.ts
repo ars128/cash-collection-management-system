@@ -38,7 +38,7 @@ export const useSupabaseEmployeeData = () => {
   // Fetch employees
   const fetchEmployees = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('employees')
         .select('*')
         .order('emp_id');
@@ -57,7 +57,7 @@ export const useSupabaseEmployeeData = () => {
   // Fetch transactions
   const fetchTransactions = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('transactions')
         .select('*')
         .order('transaction_date');
@@ -91,7 +91,7 @@ export const useSupabaseEmployeeData = () => {
     deposit_amount: number;
   }) => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('transactions')
         .insert([{
           employee_id: employeeId,
